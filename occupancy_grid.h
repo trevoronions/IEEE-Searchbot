@@ -32,6 +32,9 @@ public:
     void print() const;
 
     void loadTestMap();  // temporary for simulation
+    void printWithPath(const std::vector<std::pair<int,int>>& path) const;
+
 };
+
 
 #endif

@@ -42,6 +42,14 @@ void OccupancyGrid::print() const {
 
 void OccupancyGrid::loadTestMap() {
     // Simple box with obstacle inside
+    // Clear interior first
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            setCell(x, y, FREE);
+        }
+    }
+
+    // Outer walls
     for (int x = 0; x < width; x++) {
         setCell(x, 0, OBSTACLE);
         setCell(x, height - 1, OBSTACLE);
@@ -52,15 +60,52 @@ void OccupancyGrid::loadTestMap() {
         setCell(width - 1, y, OBSTACLE);
     }
 
-    setCell(6, 7, OBSTACLE);
-    setCell(6, 5, OBSTACLE);
-    setCell(7, 5, OBSTACLE);
+    // Vertical zig-zag wall
+    for (int y = 1; y < 12; y++)
+        setCell(3, y, OBSTACLE);
 
-    // Make interior free
-    for (int y = 1; y < height - 1; y++) {
-        for (int x = 1; x < width - 1; x++) {
-            if (getCell(x, y) != OBSTACLE)
-                setCell(x, y, FREE);
+    for (int y = 3; y < 14; y++)
+        setCell(6, y, OBSTACLE);
+
+    for (int y = 1; y < 12; y++)
+        setCell(9, y, OBSTACLE);
+
+    // Create gaps in walls (so path exists)
+    setCell(3, 4, FREE);
+    setCell(6, 8, FREE);
+    setCell(9, 5, FREE);
+
+    // Narrow corridor block
+    for (int x = 10; x < 14; x++)
+        setCell(x, 10, OBSTACLE);
+
+    // Dead-end trap
+    setCell(11, 6, OBSTACLE);
+    setCell(12, 6, OBSTACLE);
+    setCell(11, 7, OBSTACLE);
+}
+
+void OccupancyGrid::printWithPath(
+    const std::vector<std::pair<int,int>>& path) const
+{
+    std::vector<std::vector<bool>> isPath(height,
+        std::vector<bool>(width, false));
+
+    for (auto& p : path)
+        isPath[p.second][p.first] = true;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+
+            if (isPath[y][x])
+                std::cout << "* ";
+            else if (grid[y][x] == OBSTACLE)
+                std::cout << "# ";
+            else if (grid[y][x] == FREE)
+                std::cout << ". ";
+            else
+                std::cout << "? ";
         }
+        std::cout << "\n";
     }
 }

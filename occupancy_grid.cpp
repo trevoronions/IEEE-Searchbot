@@ -52,7 +52,7 @@ void OccupancyGrid::loadTestMap() {
         setCell(width - 1, y, OBSTACLE);
     }
 
-    setCell(5, 5, OBSTACLE);
+    setCell(6, 7, OBSTACLE);
     setCell(6, 5, OBSTACLE);
     setCell(7, 5, OBSTACLE);
 

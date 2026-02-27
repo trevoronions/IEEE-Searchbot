@@ -9,7 +9,7 @@ int main() {
 
     AStar planner(grid);
 
-    if (planner.findPath(1, 1, 13, 13)) {
+    if (planner.findPath(1, 1, 12, 7)) {
 
         auto path = planner.getPath();
 

@@ -9,7 +9,7 @@ struct Node {
     float g;
     float h;
     float f;
-    Node* parent;
+    Node* parent; //address to node struct
 };
 
 class AStar {

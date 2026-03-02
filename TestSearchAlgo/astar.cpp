@@ -14,7 +14,7 @@ AStar::AStar(OccupancyGrid& g) : grid(g) {}
 
 float AStar::heuristic(int x1, int y1,
                        int x2, int y2) const {
-    // Manhattan distance
+    // Manhattan distance (measures the distance between two points in a grid based system)
     return std::abs(x1 - x2) + std::abs(y1 - y2);
 }
 

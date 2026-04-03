@@ -2,7 +2,7 @@
 #include "grid.hpp"
 #include <iostream>
 #include <sstream>
-
+// command to complile g++ -o lidar_map main.cpp grid.cpp mapping.cpp
 
 int main(){
     const int ORIGIN_X = 0; 

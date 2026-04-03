@@ -8,7 +8,6 @@ enum class Cell : int{
     FREE = 1,
     OBSTRUCTED = 2
 };
-
 struct Grid2D {
     int width, height;
     std::vector<std::vector<Cell>> cells;
@@ -51,9 +50,13 @@ void polarToCartesian(float r, float degrees, float& x, float& y)
 }
 
 void drawLineHorizontal(Grid2D& grid, int x0, int y0, int  x1, int y1){
+    std::cout << "Horizontal" << std::endl;
+    grid.set(x1, y1, Cell::OBSTRUCTED); // Marking final point obstructed   
+
     if (x0 > x1) {  // If starting point is higher than end flip values
         std::swap(x0, x1);
         std::swap(y0, y1);
+        std::cout << "Swapped xy initial with xy final" << std::endl; // Testing
     }
     
     int dx = x1 - x0;
@@ -71,7 +74,7 @@ void drawLineHorizontal(Grid2D& grid, int x0, int y0, int  x1, int y1){
     if (dx != 0){
         int y = y0;
         int p = 2*dy - dx;
-        for (int i = 0; i <= dx+1; i++){
+        for (int i = 0; i < dx; i++){
             grid.set(x0 + i, y, Cell::FREE);
             if (p >= 0){
                 y += dir;
@@ -79,19 +82,21 @@ void drawLineHorizontal(Grid2D& grid, int x0, int y0, int  x1, int y1){
             } 
             p = p + 2*dy; 
         } 
-
     }
     
 }
 void drawLineVertical(Grid2D& grid, int x0, int y0, int  x1, int y1){ // Copy of drawLineHorizontal if the slope is more vertical than horizontal 
+    std::cout << "Vertical" << std::endl;
+    grid.set(x1, y1, Cell::OBSTRUCTED); // Marking final point obstructed   
+
     if (y0 > y1) {  // If starting point is higher than end flip values
         std::swap(x0, x1);
         std::swap(y0, y1);
-   
+        std::cout << "Swapped xy initial with xy final" << std::endl;
     }
     
-    int dx = x1-x0;
-    int dy = y1-y1;
+    int dx = x1 - x0;
+    int dy = y1 - y0;
     
     int dir; //determining direction of slope
     if (dx < 0){
@@ -105,7 +110,7 @@ void drawLineVertical(Grid2D& grid, int x0, int y0, int  x1, int y1){ // Copy of
     if (dy != 0){
         int x = x0;
         int p = 2*dx - dy;
-        for (int i = 0; i <= dy+1; i++){
+        for (int i = 0; i < dy; i++){
             grid.set(x, y0 + i, Cell::FREE);
             if (p >= 0){
                 x += dir;
@@ -113,9 +118,7 @@ void drawLineVertical(Grid2D& grid, int x0, int y0, int  x1, int y1){ // Copy of
             } 
             p = p + 2*dx; 
         } 
-
     }
-    
 }
 
 void drawLine(Grid2D& grid, int x0, int y0, int x1, int y1) // Bresenham's line algo

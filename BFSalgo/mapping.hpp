@@ -9,4 +9,4 @@ Point2D polarToCartesian(float r, float degrees);
 
 int worldToGrid(float worldVal, float scale);
 
-void drawLine(Grid2D& grid, int x0, int y0, int x1, int y1);
+void drawLine(Grid2D& grid, int x0, int y0, int x1, int y1); // Bresenham's Line Algorithm

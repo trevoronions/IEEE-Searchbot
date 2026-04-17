@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass
-from pyNav.grid import Grid2D, Cell
+from grid import Grid2D, Cell
 
 @dataclass
 class Point2D:

@@ -1,11 +1,10 @@
 import serial
 import time
-import sys
-sys.path.append('..')
+
 from mapping import polarToCartesian, worldToGrid, Grid2D, drawLine
 
 # Serial setup (adjust 'COM3' to your USB serial port)
-ser = serial.Serial('COM3', 9600, timeout=1)
+arduino = serial.Serial(port='COM6', baudrate=115200, timeout=1)
 time.sleep(2)  # Allow time for serial connection
 
 # Grid setup
@@ -13,7 +12,7 @@ ORIGIN_X = 0
 ORIGIN_Y = 0
 GRID_W = 20
 GRID_H = 20
-SCALE = 0.05  # 0.05m resolution
+SCALE = 0.5  # 0.05m resolution
 
 map_grid = Grid2D(GRID_W, GRID_H)
 
@@ -21,8 +20,8 @@ print("Reading polar coordinates from serial... Press Ctrl+C to stop and display
 
 try:
     while True:
-        if ser.in_waiting > 0:
-            line = ser.readline().decode('utf-8').strip()
+        if arduino.in_waiting > 0:
+            line = arduino.readline().decode('utf-8').strip()
             if line:
                 try:
                     # Assume data format: "r,theta" (e.g., "1.5,45.0")
@@ -36,7 +35,7 @@ try:
                         x_grid = worldToGrid(cart.x, SCALE)
                         y_grid = worldToGrid(cart.y, SCALE)
                         # Draw line from origin (0,0) to the point
-                        drawLine(map_grid, 0, 0, x_grid, y_grid)
+                        drawLine(map_grid, 10, 10, x_grid, y_grid)
                         print(f"Drew line to ({x_grid}, {y_grid}) from polar ({r}, {theta})")
                 except ValueError as e:
                     print(f"Invalid data received: {line} - {e}")
@@ -44,6 +43,6 @@ try:
 except KeyboardInterrupt:
     print("\nStopping serial read...")
 finally:
-    ser.close()
+    arduino.close()
     print("Serial connection closed.")
     map_grid.display()
